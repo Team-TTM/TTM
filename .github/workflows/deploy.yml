@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main  # Déclenche le workflow lors d'un push sur la branche principale
-
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest  # Utilise l'image Ubuntu pour exécuter les actions
@@ -18,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Spécifie la version de Node.js
+          node-version: '22'  # Spécifie la version de Node.js
 
       # 3. Installer les dépendances backend
       - name: Install backend dependencies
@@ -45,10 +44,12 @@ jobs:
 
       # 7. Déployer via FTP sur le serveur distant
       - name: Deploy to FTP server
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}        # L'adresse du serveur FTP
           username: ${{ secrets.FTP_USER }}    #  Nom d'utilisateur FTP
           password: ${{ secrets.FTP_PASS }}    # Mot de passe FTP
+          protocol: ftps
+          port: 21
           local-dir: ./backend/dist/               # Dossier local à déployer (ici le dossier dist du backend)
-          remote-dir: /path/to/your/remote/folder  # Dossier distant où déployer les fichiers (sur ton serveur FTP)
+          remote-dir: /path/to/your/remote/folder  # Dossier dista
