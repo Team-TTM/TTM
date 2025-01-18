@@ -31,4 +31,5 @@ coverage/
 # IDE / Éditeurs
 .vscode/
 .idea/
-.history/
+.history/node_modules/
+node_modules/
