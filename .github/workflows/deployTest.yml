@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - test  # Déclenche le workflow lors d'un push sur la branche 'test'
+      - main # Déclenche le workflow lors d'un push sur la branche 'main'
 
 jobs:
   build_and_deploy:
