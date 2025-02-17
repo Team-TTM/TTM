@@ -3,7 +3,8 @@ name: Build and Deploy via FTP
 on:
   push:
     branches:
-      - test  # Déclenche le workflow lors d'un push sur la branche principale
+      - test  # Déclenche le workflow lors d'un push sur la branche 'test'
+      - main # Déclenche le workflow lors d'un push sur la branche 'main'
 
 jobs:
   build_and_deploy:
@@ -43,14 +44,32 @@ jobs:
         run: |
           cp -r ./frontend/dist ./backend/  # Copie le dossier dist du frontend dans le backend
 
-      # 7. Déployer via FTP sur le serveur distant
+      # 7. Définir les variables d'environnement à partir des secrets GitHub
+      - name: Set environment variables
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
+          echo "FTP_HOST=${{ secrets.FTP_HOST }}" >> $GITHUB_ENV
+          echo "FTP_USER=${{ secrets.FTP_USER }}" >> $GITHUB_ENV
+          echo "FTP_PASS=${{ secrets.FTP_PASS }}" >> $GITHUB_ENV
+          echo "API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV
+          echo "FACEBOOK_CLIENT_ID=${{ secrets.FACEBOOK_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "FACEBOOK_CLIENT_SECRET=${{ secrets.FACEBOOK_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "FACEBOOK_CALLBACK_URL=${{ secrets.FACEBOOK_CALLBACK_URL }}" >> $GITHUB_ENV
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}" >> $GITHUB_ENV
+
+      # 8. Déployer via FTP sur le serveur distant
+
+      # 8. Déployer via FTP sur le serveur distant
       - name: Deploy to FTP server
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}        # L'adresse du serveur FTP
-          username: ${{ secrets.FTP_USER }}    #  Nom d'utilisateur FTP
-          password: ${{ secrets.FTP_PASS }}    # Mot de passe FTP
+          username: ${{ secrets.FTP_USER }}      # Nom d'utilisateur FTP
+          password: ${{ secrets.FTP_PASS }}      # Mot de passe FTP
           protocol: ftps
           port: 21
-          local-dir: ./backend/dist/               # Dossier local à déployer (ici le dossier dist du backend)
+          local-dir: ./backend/dist/             # Dossier local à déployer (ici le dossier dist du backend)
           remote-dir: /path/to/your/remote/folder  # Dossier distant où déployer les fichiers (sur ton serveur FTP)
