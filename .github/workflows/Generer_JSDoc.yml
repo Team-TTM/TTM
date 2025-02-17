@@ -1,0 +1,27 @@
+name: Generer_JSDoc
+on:
+  push:
+    branches:
+    - main
+    - test
+
+jobs:
+  build-doc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Installer JSDoc
+        run: npm install -g jsdoc
+
+      - name: Générer la documentation
+        run: jsdoc backend/**/*.js -d docs
