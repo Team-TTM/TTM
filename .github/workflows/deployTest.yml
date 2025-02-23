@@ -78,4 +78,4 @@ jobs:
           protocol: ftps
           port: 21
           local-dir: ./backend/       # Dossier local à déployer (ici le dossier dist du backend)
-          server-dir: /www/backend/  # Dossier cible sur o2switch
+          server-dir: www/backend/     # Dossier distant où déployer le contenu
