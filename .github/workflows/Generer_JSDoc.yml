@@ -18,10 +18,21 @@ jobs:
           node-version: '22'
 
       - name: Installer les dépendances
-        run: npm ci
+        run: npm install --prefix backend
 
       - name: Installer JSDoc
         run: npm install -g jsdoc
 
       - name: Générer la documentation
         run: jsdoc backend/**/*.js -d docs
+      - name: Configurer l'identité Git
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+
+      - name: Commit and push docs to repository
+        run: |
+            git add docs
+            git commit -m "Ajout de la documentation générée"
+            git push origin test
