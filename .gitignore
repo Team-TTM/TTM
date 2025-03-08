@@ -19,7 +19,7 @@ dist/
 build/
 
 # Environnement
-.env
+backend/.env
 
 # Tests
 coverage/
