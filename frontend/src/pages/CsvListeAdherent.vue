@@ -4,6 +4,7 @@
       <header>
         <LogoTTM/>
         <boutons-header/>
+        <boutonprofil/>
       </header>
       <div class="main-container">
         <h1 class="titre">Liste des Adhérents</h1>
@@ -29,6 +30,7 @@
               <span>Afficher seulement les licences valides</span>
             </label>
           </div>
+
 
           <div class="container-liste-adherent">
             <div class="table-wrapper">
@@ -86,7 +88,7 @@
                     <td>{{ adherent.prenom.toUpperCase() }}</td>
                     <td>{{ adherent.nom }}</td>
                     <td>{{ adherent.ville }}</td>
-                    <td>{{ afficherTelephoneMobile(adherent.mobile) }}</td>
+                    <td>{{adherent.mobile }}</td>
                     <td>{{ adherent.email }}</td>
 
                     <td>
@@ -144,8 +146,9 @@
 
   <script>
 
-  import LogoTTM from "@/components/LogoTTM.vue";
+
   import axios from "axios";
+  import LogoTTM from "@/components/LogoTTM.vue";
   import BoutonsHeader from "@/components/boutonsHeader.vue";
   export default {
     components: {BoutonsHeader, LogoTTM},
@@ -174,19 +177,6 @@
     methods: {
       afficherDetails(numeroLicence) {
         this.adherentSelectionne = this.adherentSelectionne === numeroLicence ? null : numeroLicence;
-      },
-      afficherTelephoneMobile(mobile) {
-        if (mobile.length <= 1) {
-          return "";
-        }
-        if (mobile.startsWith("-")) {
-          mobile = mobile.slice(1);
-        }
-
-        if (mobile.startsWith("33")) {
-          mobile = mobile.slice(2);
-        }
-        return "0" + mobile;
       },
       formatDate(objDate) {
         const date = new Date(objDate);
